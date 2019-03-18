@@ -1,3 +1,5 @@
+properties([pipelineTriggers([cron('0 * * * *')])])
+
 library(
     identifier: 'pipeline-lib@4.3.4',
     retriever: modernSCM([$class: 'GitSCMSource',
