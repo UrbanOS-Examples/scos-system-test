@@ -5,5 +5,4 @@ RUN mix local.hex --force \
     && mix local.rebar --force \
     && mix deps.get \
     && mix format --check-formatted \
-    && mix credo \
-    && mix test 
+    && mix credo
