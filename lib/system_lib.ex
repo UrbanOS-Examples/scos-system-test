@@ -1,4 +1,5 @@
 defmodule SystemLib do
+  @moduledoc false
   require Logger
 
   def write_csv(messages, io_device) do

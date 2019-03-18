@@ -45,7 +45,7 @@ defmodule ScosSystemTest do
     fn ->
       url = "#{@discovery_url}/dataset/#{uuid}/preview"
 
-      actual = HTTPoison.get(url) |> handle_response()
+      actual = url |> HTTPoison.get() |> handle_response()
 
       Logger.info("Waiting for #{length(actual)} messages, got #{message_count}")
 
