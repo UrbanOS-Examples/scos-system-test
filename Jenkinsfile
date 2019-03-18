@@ -17,7 +17,13 @@ node('infrastructure') {
 
         stage('Test') {
             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws_jenkins_user', variable: 'AWS_ACCESS_KEY_ID']]) {
-                sh("mix test")
+                sh('''
+                export HOST_IP=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+                mix local.hex --force
+                mix local.rebar --force
+                mix deps.get
+                mix test
+                ''')
             }
         }
     }
