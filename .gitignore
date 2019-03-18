@@ -23,3 +23,5 @@ erl_crash.dump
 scos_system_test-*.tar
 
 .elixir_ls/
+
+tmp_file

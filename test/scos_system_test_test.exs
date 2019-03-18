@@ -3,33 +3,36 @@ defmodule ScosSystemTest do
   @moduletag timeout: 1_200_000
   require Logger
 
+  @temp_file_path "./tmp_file"
+
+  setup do
+    File.rm(@temp_file_path)
+
+    :ok
+  end
+
   test "greets the world" do
-    s3_key = System.get_env("S3_KEY")
-    temp_file_path = "./tmp_file"
-    File.rm(temp_file_path)
+    uuid = UUID.uuid1() |> String.replace("-", "_")
+    Logger.info("Starting System Test with id: #{uuid}")
 
     message_count = 10
 
-    generate_messages(message_count)
+    message_count
+    |> generate_messages()
     |> CSV.encode()
-    |> Stream.each(&IO.inspect/1)
-    |> write_csv(File.open!(temp_file_path, [:append, :utf8]))
+    |> write_csv(File.open!(@temp_file_path, [:append, :utf8]))
 
-    uuid = UUID.uuid1() |> String.replace("-", "_")
-
-    send_to_bucket(temp_file_path, "scos-system-test", "system-test-#{uuid}.csv")
-
-    body = uuid |> generate_body()
+    send_to_bucket(@temp_file_path, "scos-system-test", "system-test-#{uuid}.csv")
 
     HTTPoison.put!(
       "https://andi.staging.internal.smartcolumbusos.com/api/v1/dataset",
-      body,
+      generate_body(uuid),
       [{"content-type", "application/json"}]
     )
 
     Patiently.wait_for!(
       discovery_query(uuid, message_count),
-      dwell: 10000,
+      dwell: 10_000,
       max_tries: 60
     )
   end
@@ -45,11 +48,11 @@ defmodule ScosSystemTest do
             body |> Jason.decode!() |> Map.get("data")
 
           {:ok, %HTTPoison.Response{status_code: 404}} ->
-            IO.puts("Not found :(")
+            Logger.error("Discovery API not found")
             []
 
           {:error, %HTTPoison.Error{reason: reason}} ->
-            IO.inspect(reason)
+            Logger.error("Error calling Discovery API: #{reason}")
             []
         end
 
