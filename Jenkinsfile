@@ -1,4 +1,4 @@
-properties([pipelineTriggers([cron('0 * * * *')])])
+properties([pipelineTriggers([cron('H * * * *')])])
 
 library(
     identifier: 'pipeline-lib@4.3.4',
