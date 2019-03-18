@@ -11,8 +11,10 @@ node('infrastructure') {
     ansiColor('xterm') {
         scos.doCheckoutStage()
 
-        stage('Build') {
-            image = docker.build("scos_system_test:${env.GIT_COMMIT_HASH}")
+        stage('Test') {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws_jenkins_user', variable: 'AWS_ACCESS_KEY_ID']]) {
+                image = docker.build("scos_system_test:${env.GIT_COMMIT_HASH}")
+            }
         }
     }
 }
