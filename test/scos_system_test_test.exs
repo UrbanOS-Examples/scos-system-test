@@ -17,6 +17,7 @@ defmodule ScosSystemTest do
 
   test "greets the world" do
     uuid = UUID.uuid1() |> String.replace("-", "_")
+    uuid = "SYS_" <> uuid
     Logger.info("Starting System Test with id: #{uuid}")
 
     message_count = 10
@@ -47,7 +48,7 @@ defmodule ScosSystemTest do
 
       actual = url |> HTTPoison.get() |> handle_response()
 
-      Logger.info("Waiting for #{length(actual)} messages, got #{message_count}")
+      Logger.info("Waiting for #{message_count} messages, got #{length(actual)}")
 
       try do
         assert length(actual) == message_count
