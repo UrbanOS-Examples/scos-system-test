@@ -53,6 +53,8 @@ defmodule SystemLib do
             "Authorization":"Basic xdasdgdasgdsgd"
          },
          "orgName":"scos-test",
+         "sourceType":"batch",
+         "stream": false,
          "queryParams":{
 
          },
@@ -81,7 +83,7 @@ defmodule SystemLib do
          "sourceFormat":"csv",
          "sourceUrl":"https://s3.amazonaws.com/scos-system-test/system-test-#{uuid}.csv",
          "stream":"IDK",
-         "systemName":"scos__system_test_#{uuid}",
+         "systemName":"scos_test__#{uuid}",
          "transformations":[
             "a_transform"
          ]
