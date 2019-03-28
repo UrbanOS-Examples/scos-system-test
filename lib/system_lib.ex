@@ -16,8 +16,7 @@ defmodule SystemLib do
   end
 
   def generate_messages(number) do
-    [["name", "type", "quantity", "size", "is_alive"]] ++
-      Enum.map(1..number, &generate_message/1)
+    Enum.map(1..number, &generate_message/1)
   end
 
   defp generate_message(_) do
