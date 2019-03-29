@@ -25,14 +25,14 @@ defmodule ScosSystemTest.MixProject do
     [
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
       {:httpoison, "~> 1.5"},
-      {:patiently, "~> 0.2.0", only: [:dev, :test, :integration]},
+      {:patiently, "~> 0.2", only: [:dev, :test, :integration]},
       {:jason, "~> 1.1"},
       {:elixir_uuid, "~> 1.2"},
-      {:csv, "~> 2.0.0"},
+      {:csv, "~> 2.3"},
       {:ex_aws_s3, "~> 2.0"},
-      {:ex_aws, "~> 2.0.0"},
+      {:ex_aws, "~> 2.0"},
       {:faker, "~> 0.12", only: [:test, :integration]},
-      {:hackney, "~> 1.9"},
+      {:hackney, "~> 1.15"},
       {:sweet_xml, "~> 0.6"},
       {:configparser_ex, "~> 2.0"},
       {:ex_aws_sts, "~> 2.0"}

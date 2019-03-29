@@ -46,7 +46,7 @@ defmodule SystemLib do
           "type": "Hash",
           "query": "bob"
         },
-         "cadence":60000,
+         "cadence":"once",
          "dataName":"name",
          "headers":{
             "Authorization":"Basic xdasdgdasgdsgd"
