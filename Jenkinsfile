@@ -1,11 +1,12 @@
-properties([pipelineTriggers([cron('H * * * *')])])
-
 library(
     identifier: 'pipeline-lib@4.3.4',
     retriever: modernSCM([$class: 'GitSCMSource',
                           remote: 'https://github.com/SmartColumbusOS/pipeline-lib',
                           credentialsId: 'jenkins-github-user'])
 )
+
+schedule = scos.changeset.isMaster ? 'H * * * *' : ''
+properties([pipelineTriggers([cron(schedule)])])
 
 def image
 
