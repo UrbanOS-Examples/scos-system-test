@@ -101,8 +101,38 @@ defmodule ScosSystemTest do
       technical: %{
         systemName: "scos_test__" <> uuid,
         orgId: organization_id,
+        partitioner: %{
+          type: "Hash",
+          query: ""
+        },
         cadence: "once",
-        sourceUrl: "https://s3.amazonaws.com/scos-system-test/system-test-#{uuid}.csv"
+        sourceType: "batch",
+        sourceUrl: "https://s3.amazonaws.com/scos-system-test/system-test-#{uuid}.csv",
+        sourceFormat: "csv",
+        headers: %{},
+        queryParams: %{},
+        schema: [
+          %{
+            name: "name",
+            type: "string"
+          },
+          %{
+            name: "type",
+            type: "string"
+          },
+          %{
+            name: "quantity",
+            type: "integer"
+          },
+          %{
+            name: "size",
+            type: "float"
+          },
+          %{
+            name: "is_alive",
+            type: "boolean"
+          }
+        ]
       }
     }
     |> TDG.create_dataset()
