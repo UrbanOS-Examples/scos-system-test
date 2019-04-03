@@ -109,8 +109,6 @@ defmodule ScosSystemTest do
         sourceType: "batch",
         sourceUrl: "https://s3.amazonaws.com/scos-system-test/system-test-#{uuid}.csv",
         sourceFormat: "csv",
-        headers: %{},
-        queryParams: %{},
         schema: [
           %{
             name: "name",
