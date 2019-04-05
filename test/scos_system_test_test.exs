@@ -26,10 +26,7 @@ defmodule ScosSystemTest do
       generate_organization(uuid)
       |> upload_organization()
 
-    generate_raw_records(record_count)
-    |> upload_data_to_bucket(uuid)
-
-    generate_dataset(uuid, organization_id)
+    generate_dataset(uuid, organization_id, record_count)
     |> upload_dataset()
 
     wait_for_data_to_appear_in_discovery(uuid, record_count)
@@ -60,42 +57,7 @@ defmodule ScosSystemTest do
     |> Map.get("id")
   end
 
-  defp generate_raw_records(count) do
-    Enum.map(1..count, &generate_raw_record/1)
-  end
-
-  defp generate_raw_record(_) do
-    [
-      Faker.Name.It.name(),
-      Faker.Nato.letter_code_word(),
-      Faker.random_between(1, 999_999),
-      Faker.random_between(1, 999) + Faker.random_between(1, 999) / 100,
-      Faker.random_between(0, 1) == 1
-    ]
-  end
-
-  defp upload_data_to_bucket(records, uuid) do
-    records
-    |> CSV.encode()
-    |> write_csv(File.open!(@temp_file_path, [:append, :utf8]))
-
-    send_to_bucket(@temp_file_path, "scos-system-test", "system-test-#{uuid}.csv")
-  end
-
-  defp write_csv(messages, io_device) do
-    messages
-    |> Stream.each(&IO.write(io_device, &1))
-    |> Stream.run()
-  end
-
-  defp send_to_bucket(file_path, bucket, s3_key) do
-    file_path
-    |> ExAws.S3.Upload.stream_file()
-    |> ExAws.S3.upload(bucket, s3_key)
-    |> ExAws.request()
-  end
-
-  defp generate_dataset(uuid, organization_id) do
+  defp generate_dataset(uuid, organization_id, record_count) do
     %{
       id: uuid,
       technical: %{
@@ -107,7 +69,11 @@ defmodule ScosSystemTest do
         },
         cadence: "once",
         sourceType: "batch",
-        sourceUrl: "https://s3.amazonaws.com/scos-system-test/system-test-#{uuid}.csv",
+        sourceUrl: "http://data-generator.testing/api/generate",
+        queryParams: %{
+          "dataset_id" => uuid,
+          "count" => to_string(record_count)
+        },
         sourceFormat: "csv",
         schema: [
           %{
