@@ -34,7 +34,7 @@ defmodule ScosSystemTest.MixProject do
       {:sweet_xml, "~> 0.6"},
       {:configparser_ex, "~> 2.0"},
       {:smart_city_registry, "~> 2.6", organization: "smartcolumbus_os"},
-      {:smart_city_test, "~> 0.2", only: [:test, :integration], organization: "smartcolumbus_os"}
+      {:smart_city_test, "~> 0.2.3", only: [:test, :integration], organization: "smartcolumbus_os"}
     ]
   end
 end

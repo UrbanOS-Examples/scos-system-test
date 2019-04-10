@@ -96,7 +96,8 @@ defmodule ScosSystemTest do
             name: "is_alive",
             type: "boolean"
           }
-        ]
+        ],
+        private: false
       }
     }
     |> TDG.create_dataset()
