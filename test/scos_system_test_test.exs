@@ -20,14 +20,18 @@ defmodule ScosSystemTest do
     uuid = generate_uuid()
     record_count = 10
 
-    Logger.info("Starting System Test with id: #{uuid}")
+    Logger.info("Starting System Test")
+    Logger.info("Dataset Id: #{uuid}")
 
-    organization_id =
-      generate_organization(uuid)
-      |> upload_organization()
+    organization = generate_organization(uuid)
+    organization_id = upload_organization(organization)
 
-    generate_dataset(uuid, organization_id, record_count)
-    |> upload_dataset()
+    Logger.info("Organization Id: #{organization_id}")
+    Logger.info("Organization: #{inspect(organization)}")
+
+    dataset = generate_dataset(uuid, organization_id, record_count)
+    upload_dataset(dataset)
+    Logger.info("Dataset: #{inspect(dataset)}")
 
     wait_for_data_to_appear_in_discovery(uuid, record_count)
   end
@@ -114,8 +118,8 @@ defmodule ScosSystemTest do
   defp wait_for_data_to_appear_in_discovery(uuid, count) do
     Patiently.wait_for!(
       discovery_query(uuid, count),
-      dwell: 10_000,
-      max_tries: 60
+      dwell: 6_000,
+      max_tries: 50
     )
   end
 
@@ -126,6 +130,7 @@ defmodule ScosSystemTest do
       actual = url |> HTTPoison.get() |> handle_response()
 
       Logger.info("Waiting for #{message_count} messages, got #{length(actual)}")
+      Logger.info("Messages: #{inspect(actual)}")
 
       try do
         assert length(actual) == message_count
