@@ -23,9 +23,8 @@ defmodule ScosSystemTest do
     Logger.info("Starting System Test")
     Logger.info("Dataset Id: #{uuid}")
 
-    organization_id =
-      generate_organization(uuid)
-      |> upload_organization()
+    organization = generate_organization(uuid)
+    organization_id = upload_organization(organization)
 
     Logger.info("Organization Id: #{organization_id}")
     Logger.info("Organization: #{inspect(organization)}")
