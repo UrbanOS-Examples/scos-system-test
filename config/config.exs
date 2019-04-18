@@ -3,7 +3,7 @@
 use Mix.Config
 
 config :scos_system_test,
-  discovery_url: "https://discoveryapi.staging.internal.smartcolumbusos.com/api/v1",
+  discovery_url: "https://data.staging.internal.smartcolumbusos.com/api/v1",
   andi_url: "https://andi.staging.internal.smartcolumbusos.com/api/v1"
 
 #     import_config "#{Mix.env()}.exs"
