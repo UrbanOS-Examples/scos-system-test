@@ -67,6 +67,8 @@ defmodule ScosSystemTest do
       technical: %{
         systemName: "scos_test__" <> uuid,
         orgId: organization_id,
+        orgName: "scos_test",
+        dataName: uuid,
         partitioner: %{
           type: "Hash",
           query: ""
