@@ -15,7 +15,7 @@ defmodule ScosSystemTest.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger, :faker, :kaffe],
       applications: [:httpoison]
     ]
   end
@@ -25,16 +25,18 @@ defmodule ScosSystemTest.MixProject do
     [
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
       {:httpoison, "~> 1.5"},
+      {:kaffe, "~> 1.0"},
       {:patiently, "~> 0.2", only: [:dev, :test, :integration]},
       {:jason, "~> 1.1"},
       {:elixir_uuid, "~> 1.2"},
       {:csv, "~> 2.3"},
-      {:faker, "~> 0.12", only: [:test, :integration]},
+      {:timex, "~> 3.1"},
+      {:faker, "~> 0.12"},
       {:hackney, "~> 1.15"},
       {:sweet_xml, "~> 0.6"},
       {:configparser_ex, "~> 2.0"},
       {:smart_city_registry, "~> 2.6", organization: "smartcolumbus_os"},
-      {:smart_city_test, "~> 0.2.3", only: [:test, :integration], organization: "smartcolumbus_os"}
+      {:smart_city_test, "~> 0.2.3", organization: "smartcolumbus_os"}
     ]
   end
 end

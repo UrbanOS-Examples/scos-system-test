@@ -1,13 +1,11 @@
 defmodule ScosSystemTest do
   use ExUnit.Case
   @moduletag timeout: 1_200_000
+  alias ScosSystemTest.Helpers
 
   require Logger
-  import SystemLib
-  alias SmartCity.TestDataGenerator, as: TDG
 
   @temp_file_path "./tmp_file"
-  @andi_url Application.get_env(:scos_system_test, :andi_url)
   @discovery_url Application.get_env(:scos_system_test, :discovery_url)
 
   setup do
@@ -17,102 +15,23 @@ defmodule ScosSystemTest do
   end
 
   test "adds an organization and creates a dataset for it" do
-    uuid = generate_uuid()
+    uuid = Helpers.generate_uuid()
     record_count = 10
 
     Logger.info("Starting System Test")
     Logger.info("Dataset Id: #{uuid}")
 
-    organization = generate_organization(uuid)
-    organization_id = upload_organization(organization)
+    organization = Helpers.generate_organization(uuid)
+    organization_id = Helpers.upload_organization(organization)
 
     Logger.info("Organization Id: #{organization_id}")
     Logger.info("Organization: #{inspect(organization)}")
 
-    dataset = generate_dataset(uuid, organization_id, record_count)
-    upload_dataset(dataset)
+    dataset = Helpers.generate_dataset(uuid, organization_id, record_count)
+    Helpers.upload_dataset(dataset)
     Logger.info("Dataset: #{inspect(dataset)}")
 
     wait_for_data_to_appear_in_discovery(uuid, record_count)
-  end
-
-  defp generate_uuid() do
-    UUID.uuid1()
-    |> String.replace("-", "_")
-    |> String.replace_prefix("", "SYS_")
-  end
-
-  defp generate_organization(uuid) do
-    %{
-      orgName: uuid <> "_ORG",
-      logoUrl: Faker.Internet.image_url()
-    }
-    |> TDG.create_organization()
-  end
-
-  defp upload_organization(organization) do
-    "#{@andi_url}/organization"
-    |> HTTPoison.post!(
-      organization |> Jason.encode!(),
-      [{"content-type", "application/json"}]
-    )
-    |> Map.get(:body)
-    |> Jason.decode!()
-    |> Map.get("id")
-  end
-
-  defp generate_dataset(uuid, organization_id, record_count) do
-    %{
-      id: uuid,
-      technical: %{
-        systemName: "scos_test__" <> uuid,
-        orgId: organization_id,
-        partitioner: %{
-          type: "Hash",
-          query: ""
-        },
-        cadence: "once",
-        sourceType: "batch",
-        sourceUrl: "http://data-generator.testing/api/generate",
-        queryParams: %{
-          "dataset_id" => uuid,
-          "count" => to_string(record_count)
-        },
-        sourceFormat: "csv",
-        schema: [
-          %{
-            name: "name",
-            type: "string"
-          },
-          %{
-            name: "type",
-            type: "string"
-          },
-          %{
-            name: "quantity",
-            type: "integer"
-          },
-          %{
-            name: "size",
-            type: "float"
-          },
-          %{
-            name: "is_alive",
-            type: "boolean"
-          }
-        ],
-        private: false
-      }
-    }
-    |> TDG.create_dataset()
-  end
-
-  defp upload_dataset(dataset) do
-    HTTPoison.put!(
-      "#{@andi_url}/dataset",
-      dataset |> Jason.encode!(),
-      [{"content-type", "application/json"}]
-    )
   end
 
   defp wait_for_data_to_appear_in_discovery(uuid, count) do
