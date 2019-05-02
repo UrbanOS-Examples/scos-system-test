@@ -1,6 +1,5 @@
 defmodule ScosSystemTest.Helpers do
   alias SmartCity.TestDataGenerator, as: TDG
-  @andi_url Application.get_env(:scos_system_test, :andi_url)
 
   def generate_uuid() do
     UUID.uuid1()
@@ -16,8 +15,8 @@ defmodule ScosSystemTest.Helpers do
     |> TDG.create_organization()
   end
 
-  def upload_organization(organization) do
-    "#{@andi_url}/organization"
+  def upload_organization(organization, andi_url) do
+    "#{andi_url}/organization"
     |> HTTPoison.post!(
       organization |> Jason.encode!(),
       [{"content-type", "application/json"}]
@@ -27,7 +26,7 @@ defmodule ScosSystemTest.Helpers do
     |> Map.get("id")
   end
 
-  def generate_dataset(uuid, organization_id, record_count) do
+  def generate_dataset(uuid, organization_id, record_count, tdg_url) do
     %{
       id: uuid,
       technical: %{
@@ -39,7 +38,7 @@ defmodule ScosSystemTest.Helpers do
         },
         cadence: "once",
         sourceType: "batch",
-        sourceUrl: "http://data-generator.testing/api/generate",
+        sourceUrl: "#{tdg_url}",
         queryParams: %{
           "dataset_id" => uuid,
           "count" => to_string(record_count)
@@ -73,9 +72,9 @@ defmodule ScosSystemTest.Helpers do
     |> TDG.create_dataset()
   end
 
-  def upload_dataset(dataset) do
+  def upload_dataset(dataset, andi_url) do
     HTTPoison.put!(
-      "#{@andi_url}/dataset",
+      "#{andi_url}/dataset",
       dataset |> Jason.encode!(),
       [{"content-type", "application/json"}]
     )

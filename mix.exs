@@ -15,7 +15,7 @@ defmodule ScosSystemTest.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :faker, :kaffe],
+      extra_applications: [:logger, :faker],
       applications: [:httpoison]
     ]
   end
@@ -25,7 +25,6 @@ defmodule ScosSystemTest.MixProject do
     [
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
       {:httpoison, "~> 1.5"},
-      {:kaffe, "~> 1.0"},
       {:patiently, "~> 0.2", only: [:dev, :test, :integration]},
       {:jason, "~> 1.1"},
       {:elixir_uuid, "~> 1.2"},

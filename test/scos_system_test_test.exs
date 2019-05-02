@@ -7,6 +7,8 @@ defmodule ScosSystemTest do
 
   @temp_file_path "./tmp_file"
   @discovery_url Application.get_env(:scos_system_test, :discovery_url)
+  @default_andi_url Application.get_env(:scos_system_test, :default_andi_url)
+  @default_tdg_url Application.get_env(:scos_system_test, :default_tdg_url)
 
   setup do
     File.rm(@temp_file_path)
@@ -22,13 +24,13 @@ defmodule ScosSystemTest do
     Logger.info("Dataset Id: #{uuid}")
 
     organization = Helpers.generate_organization(uuid)
-    organization_id = Helpers.upload_organization(organization)
+    organization_id = Helpers.upload_organization(organization, @default_andi_url)
 
     Logger.info("Organization Id: #{organization_id}")
     Logger.info("Organization: #{inspect(organization)}")
 
-    dataset = Helpers.generate_dataset(uuid, organization_id, record_count)
-    Helpers.upload_dataset(dataset)
+    dataset = Helpers.generate_dataset(uuid, organization_id, record_count, @default_tdg_url)
+    Helpers.upload_dataset(dataset, @default_andi_url)
     Logger.info("Dataset: #{inspect(dataset)}")
 
     wait_for_data_to_appear_in_discovery(uuid, record_count)
