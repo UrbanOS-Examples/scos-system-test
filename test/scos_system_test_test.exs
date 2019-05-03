@@ -46,7 +46,7 @@ defmodule ScosSystemTest do
 
   defp discovery_query(uuid, message_count) do
     fn ->
-      url = "#{@discovery_url}/dataset/#{uuid}/preview"
+      url = "#{@discovery_url}/api/v1/dataset/#{uuid}/preview"
 
       actual = url |> HTTPoison.get() |> handle_response()
 
