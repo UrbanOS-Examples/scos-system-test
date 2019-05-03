@@ -1,4 +1,9 @@
 defmodule ScosSystemTest.Helpers do
+  @moduledoc """
+  ScosSystemTest.Helpers contains functions that are common
+  between the system test and performance test,
+  mostly for creating and uploading test datasets.
+  """
   alias SmartCity.TestDataGenerator, as: TDG
 
   def generate_uuid() do

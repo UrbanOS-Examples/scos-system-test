@@ -1,4 +1,9 @@
 defmodule ScosSystemTest.Performance do
+  @moduledoc """
+  ScosSystemTest.Performance will eventually be an actual
+  system test, but for now all it does is generate
+  and upload a specified number of datasets.
+  """
   require Logger
   alias ScosSystemTest.Helpers
   @default_andi_url Application.get_env(:scos_system_test, :default_andi_url)
