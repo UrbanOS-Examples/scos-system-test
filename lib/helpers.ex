@@ -16,7 +16,7 @@ defmodule ScosSystemTest.Helpers do
   end
 
   def upload_organization(organization, andi_url) do
-    "#{andi_url}/organization"
+    "#{andi_url}/api/v1/organization"
     |> HTTPoison.post!(
       organization |> Jason.encode!(),
       [{"content-type", "application/json"}]
@@ -38,7 +38,7 @@ defmodule ScosSystemTest.Helpers do
         },
         cadence: "once",
         sourceType: "batch",
-        sourceUrl: "#{tdg_url}",
+        sourceUrl: "#{tdg_url}/api/generate",
         queryParams: %{
           "dataset_id" => uuid,
           "count" => to_string(record_count)
@@ -74,7 +74,7 @@ defmodule ScosSystemTest.Helpers do
 
   def upload_dataset(dataset, andi_url) do
     HTTPoison.put!(
-      "#{andi_url}/dataset",
+      "#{andi_url}/api/v1/dataset",
       dataset |> Jason.encode!(),
       [{"content-type", "application/json"}]
     )
