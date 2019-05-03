@@ -29,7 +29,6 @@ defmodule ScosSystemTest.MixProject do
       {:jason, "~> 1.1"},
       {:elixir_uuid, "~> 1.2"},
       {:csv, "~> 2.3"},
-      {:timex, "~> 3.1"},
       {:faker, "~> 0.12"},
       {:hackney, "~> 1.15"},
       {:sweet_xml, "~> 0.6"},
