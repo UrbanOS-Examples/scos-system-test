@@ -4,12 +4,12 @@
 
 # Performance 
 
-This module will generate a given number of data sets with a given number of records each, and post them to andi. 
-You can also specifiy the andi url that you want to post the data to, as well as the test data generator url.
+This module will generate a given number of data sets with a given number of records each, and post them to ANDI. 
+You can also specifiy the ANDI url that you want to post the data to, as well as the test data generator url.
 You can run this locally via iex. the options are passed as a keyword list like below: 
 ```
-iex -S mix
-ScosSystemTest.Performance.run([record_count: 10, dataset_count: 2, andi_url: 'https://andi.staging.internal.smartcolumbusos.com', tdg_url: 'http://data-generator.testing'])
+$ iex -S mix
+iex(1)> ScosSystemTest.Performance.run([record_count: 10, dataset_count: 2, andi_url: 'https://andi.staging.internal.smartcolumbusos.com', tdg_url: 'http://data-generator.testing'])
 ```
 
 Currently, this is not runnable through jenkins.
