@@ -19,7 +19,7 @@ defmodule ScosSystemTest.Performance do
 
     result_list =
       Enum.map(1..dataset_count, fn i ->
-        cycled_index = rem(i, record_counts_length)
+        cycled_index = rem(i - 1, record_counts_length)
         cycled_record_count = Enum.at(record_counts, cycled_index)
         create_and_upload_dataset(andi_url, tdg_url, cycled_record_count)
       end)
