@@ -12,11 +12,23 @@ defmodule ScosSystemTest.Performance do
   def run(options \\ []) do
     andi_url = Keyword.get(options, :andi_url, @default_andi_url)
     tdg_url = Keyword.get(options, :tdg_url, @default_tdg_url)
-    record_count = Keyword.get(options, :record_count, 100)
+    record_counts = Keyword.get(options, :record_counts, [100])
+    record_counts_length = Enum.count(record_counts)
     dataset_count = Keyword.get(options, :dataset_count, 1)
-    Logger.info("Posting #{dataset_count} datasets with #{record_count} records to #{andi_url}")
+    Logger.info("Posting #{dataset_count} datasets to #{andi_url}")
 
-    Enum.each(1..dataset_count, fn _ -> create_and_upload_dataset(andi_url, tdg_url, record_count) end)
+    result_list =
+      Enum.map(1..dataset_count, fn i ->
+        cycled_index = rem(i, record_counts_length)
+        cycled_record_count = Enum.at(record_counts, cycled_index)
+        create_and_upload_dataset(andi_url, tdg_url, cycled_record_count)
+      end)
+
+    Logger.info("Finished posting datasets: ")
+
+    Enum.each(result_list, fn result ->
+      Logger.info("Id: #{result.id}, system name: #{result.system_name} record count: #{result.record_count}")
+    end)
   end
 
   def create_and_upload_dataset(andi_url, tdg_url, record_count) do
@@ -27,5 +39,7 @@ defmodule ScosSystemTest.Performance do
 
     dataset = Helpers.generate_dataset(uuid, organization_id, record_count, tdg_url)
     Helpers.upload_dataset(dataset, andi_url)
+
+    %{id: uuid, system_name: dataset.technical.systemName, record_count: record_count}
   end
 end
