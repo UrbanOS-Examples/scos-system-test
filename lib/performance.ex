@@ -18,7 +18,7 @@ defmodule ScosSystemTest.Performance do
     Logger.info("Posting #{dataset_count} datasets to #{andi_url}")
 
     result_list =
-      Enum.map(1..dataset_count, fn i ->
+      Enum.map(0..(dataset_count - 1), fn i ->
         cycled_index = rem(i, record_counts_length)
         cycled_record_count = Enum.at(record_counts, cycled_index)
         create_and_upload_dataset(andi_url, tdg_url, cycled_record_count)
