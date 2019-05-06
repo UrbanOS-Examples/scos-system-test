@@ -52,7 +52,8 @@ defmodule ScosSystemTest.Helpers do
         schema: [
           %{
             name: "name",
-            type: "string"
+            type: "string",
+            required: "true"
           },
           %{
             name: "type",
