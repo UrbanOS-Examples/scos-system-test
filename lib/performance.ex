@@ -29,6 +29,8 @@ defmodule ScosSystemTest.Performance do
     Enum.each(result_list, fn result ->
       Logger.info("Id: #{result.id}, system name: #{result.system_name} record count: #{result.record_count}")
     end)
+
+    result_list
   end
 
   def create_and_upload_dataset(andi_url, tdg_url, record_count) do
@@ -40,6 +42,8 @@ defmodule ScosSystemTest.Performance do
     dataset = Helpers.generate_dataset(uuid, organization_id, record_count, tdg_url)
     Helpers.upload_dataset(dataset, andi_url)
 
-    %{id: uuid, system_name: dataset.technical.systemName, record_count: record_count}
+    %{technical: %{orgName: orgName, dataName: dataName}} = dataset
+
+    %{id: uuid, system_name: "#{orgName}__#{dataName}", record_count: record_count}
   end
 end
