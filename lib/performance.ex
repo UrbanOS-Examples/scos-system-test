@@ -28,7 +28,9 @@ defmodule ScosSystemTest.Performance do
     Logger.info("Finished posting datasets: ")
 
     Enum.each(result_list, fn result ->
-      Logger.info("Id: #{result.id}, system name: #{result.system_name} record count: #{result.record_count}")
+      Logger.info(
+        "Id: #{result.id}, system name: #{result.system_name} record count: #{result.record_count}"
+      )
     end)
 
     result_list
@@ -62,7 +64,10 @@ defmodule ScosSystemTest.Performance do
       |> select_stats()
       |> Enum.group_by(&Map.get(&1, "dataset_id"))
 
-    merged = Map.merge(map_of_datasets, map_of_stats, fn _k, dataset, stats -> Map.put(dataset, :stats, stats) end)
+    merged =
+      Map.merge(map_of_datasets, map_of_stats, fn _k, dataset, stats ->
+        Map.put(dataset, :stats, stats)
+      end)
 
     Enum.map(merged, fn {_k, v} -> v end)
   end
@@ -83,10 +88,6 @@ defmodule ScosSystemTest.Performance do
       {group_key, clean_and_aggregate_group(group_of_datasets)}
     end)
     |> Enum.into(Map.new())
-  end
-
-  def reject_known_bads(datasets) do
-    Enum.reject(datasets, &String.contains?(&1.system_name, "ó"))
   end
 
   def select_stats(datasets) do
@@ -116,6 +117,8 @@ defmodule ScosSystemTest.Performance do
 
   def log_count(count, dataset) do
     Logger.info(fn -> "#{dataset.id}: #{count}/#{dataset.record_count}" end)
+
+    count
   end
 
   defp datasets_string(datasets) do
