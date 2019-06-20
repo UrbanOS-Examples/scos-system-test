@@ -44,7 +44,7 @@ defmodule ScosSystemTest.Helpers do
         cadence: "once",
         sourceType: "batch",
         sourceUrl: "#{tdg_url}/api/generate",
-        queryParams: %{
+        sourceQueryParams: %{
           "dataset_id" => uuid,
           "count" => to_string(record_count)
         },
