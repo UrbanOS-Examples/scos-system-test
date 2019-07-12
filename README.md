@@ -31,3 +31,7 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/scos_system_test](https://hexdocs.pm/scos_system_test).
 
+
+## Running
+
+`MIX_ENV=system mix test`

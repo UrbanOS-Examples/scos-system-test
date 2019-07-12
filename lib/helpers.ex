@@ -42,7 +42,7 @@ defmodule ScosSystemTest.Helpers do
           query: ""
         },
         cadence: "once",
-        sourceType: "batch",
+        sourceType: "ingest",
         sourceUrl: "#{tdg_url}/api/generate",
         sourceQueryParams: %{
           "dataset_id" => uuid,
