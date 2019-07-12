@@ -24,7 +24,7 @@ defmodule ScosSystemTest.MixProject do
     [
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
       {:httpoison, "~> 1.5"},
-      {:patiently, "~> 0.2", only: [:dev, :test, :system]},
+      {:patiently, "~> 0.2"},
       {:jason, "~> 1.1"},
       {:elixir_uuid, "~> 1.2"},
       {:csv, "~> 2.3"},
@@ -32,8 +32,8 @@ defmodule ScosSystemTest.MixProject do
       {:hackney, "~> 1.15"},
       {:sweet_xml, "~> 0.6"},
       {:configparser_ex, "~> 2.0"},
-      {:smart_city_registry, "~> 3.0"},
-      {:smart_city_test, "~> 0.2.7"},
+      {:smart_city_registry, "~> 4.0"},
+      {:smart_city_test, "~> 0.3"},
       {:prestige, "~> 0.3.1"},
       {:placebo, "~> 1.2", only: [:dev, :test]}
     ]
