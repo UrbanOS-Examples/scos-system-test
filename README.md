@@ -22,7 +22,7 @@ by adding `scos_system_test` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:scos_system_test, "~> 0.1.0"}
+    {:scos_system_test, "~> 0.1.1"}
   ]
 end
 ```

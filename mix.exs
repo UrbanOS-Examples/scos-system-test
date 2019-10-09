@@ -4,7 +4,7 @@ defmodule ScosSystemTest.MixProject do
   def project do
     [
       app: :scos_system_test,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -31,9 +31,11 @@ defmodule ScosSystemTest.MixProject do
       {:faker, "~> 0.12"},
       {:hackney, "~> 1.15"},
       {:sweet_xml, "~> 0.6"},
-      {:configparser_ex, "~> 2.0"},
-      {:smart_city_registry, "~> 4.0"},
-      {:smart_city_test, "~> 0.3"},
+      {:configparser_ex, "~> 4.0"},
+      # can take out override when registry is no longer used
+      {:smart_city, "~> 3.0", override: true},
+      {:smart_city_registry, "~> 5.0"},
+      {:smart_city_test, "~> 0.5.3"},
       {:prestige, "~> 0.3.1"},
       {:placebo, "~> 1.2", only: [:dev, :test]}
     ]
