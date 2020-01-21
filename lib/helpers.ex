@@ -6,6 +6,31 @@ defmodule ScosSystemTest.Helpers do
   """
   alias SmartCity.TestDataGenerator, as: TDG
 
+  @sample_schema [
+    %{
+      name: "name",
+      type: "string",
+      required: "true"
+    },
+    %{
+      name: "type",
+      type: "string"
+    },
+    %{
+      name: "quantity",
+      type: "integer"
+    },
+    %{
+      name: "size",
+      type: "float"
+    },
+    %{
+      name: "is_alive",
+      type: "boolean"
+    }
+  ]
+
+
   def generate_uuid() do
     UUID.uuid1()
     |> String.replace("-", "_")
@@ -32,6 +57,8 @@ defmodule ScosSystemTest.Helpers do
   end
 
   def generate_dataset(uuid, organization_id, record_count, tdg_url) do
+    format = Faker.Util.pick(["csv", "json"])
+
     %{
       id: uuid,
       technical: %{
@@ -45,33 +72,12 @@ defmodule ScosSystemTest.Helpers do
         sourceType: "ingest",
         sourceUrl: "#{tdg_url}/api/generate",
         sourceQueryParams: %{
-          "dataset_id" => uuid,
+          "format" => format,
+          "schema" => Jason.encode!(@sample_schema),
           "count" => to_string(record_count)
         },
-        sourceFormat: "csv",
-        schema: [
-          %{
-            name: "name",
-            type: "string",
-            required: "true"
-          },
-          %{
-            name: "type",
-            type: "string"
-          },
-          %{
-            name: "quantity",
-            type: "integer"
-          },
-          %{
-            name: "size",
-            type: "float"
-          },
-          %{
-            name: "is_alive",
-            type: "boolean"
-          }
-        ],
+        sourceFormat: format,
+        schema: @sample_schema,
         private: false
       }
     }

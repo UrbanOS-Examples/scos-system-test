@@ -33,9 +33,8 @@ defmodule ScosSystemTest.MixProject do
       {:sweet_xml, "~> 0.6"},
       {:configparser_ex, "~> 4.0"},
       # can take out override when registry is no longer used
-      {:smart_city, "~> 3.0", override: true},
-      {:smart_city_registry, "~> 5.0"},
-      {:smart_city_test, "~> 0.5.3"},
+      {:smart_city, "~> 3.0"},
+      {:smart_city_test, "~> 0.9"},
       {:prestige, "~> 0.3.1"},
       {:placebo, "~> 1.2", only: [:dev, :test]}
     ]
