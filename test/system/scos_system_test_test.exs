@@ -67,13 +67,16 @@ defmodule ScosSystemTest do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         body |> Jason.decode!() |> Map.get("data")
 
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
-        Logger.error("Discovery API responded with NOT FOUND (404)")
+      {:ok, %HTTPoison.Response{status_code: status_code}} ->
+        Logger.error("Unexpected status code from Discovery API: #{status_code}")
         []
 
       {:error, %HTTPoison.Error{reason: reason}} ->
         Logger.error("Error calling Discovery API: #{reason}")
         []
+
+      result ->
+        Logger.error("Unexpected result from Discovery API: #{result}")
     end
   end
 end
