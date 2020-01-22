@@ -25,13 +25,13 @@ defmodule ScosSystemTest do
     organization = Helpers.generate_organization(uuid)
     organization_id = Helpers.upload_organization(organization, @default_andi_url)
 
-    Logger.debug("Organization Id: #{organization_id}")
-    Logger.debug("Organization: #{inspect(organization)}")
+    Logger.info("Organization Id: #{organization_id}")
+    Logger.info("Organization: #{inspect(organization)}")
 
     dataset = Helpers.generate_dataset(uuid, organization_id, record_count, @default_tdg_url)
-    Logger.debug("Dataset: #{inspect(dataset)}")
+    Logger.info("Dataset: #{inspect(dataset)}")
     result = Helpers.upload_dataset(dataset, @default_andi_url)
-    Logger.debug("Result of dataset creation: #{inspect(result)}")
+    Logger.info("Result of dataset creation: #{inspect(result)}")
 
     wait_for_data_to_appear_in_discovery(uuid, record_count)
   end
