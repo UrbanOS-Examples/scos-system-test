@@ -12,14 +12,12 @@ defmodule ScosSystemTest.MixProject do
     ]
   end
 
-  # Run "mix help compile.app" to learn about applications.
   def application do
     [
       extra_applications: [:logger, :faker, :httpoison]
     ]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
@@ -32,7 +30,6 @@ defmodule ScosSystemTest.MixProject do
       {:hackney, "~> 1.15"},
       {:sweet_xml, "~> 0.6"},
       {:configparser_ex, "~> 4.0"},
-      # can take out override when registry is no longer used
       {:smart_city, "~> 3.0"},
       {:smart_city_test, "~> 0.9"},
       {:prestige, "~> 0.3.1"},
