@@ -20,8 +20,7 @@ defmodule ScosSystemTest do
     uuid = Helpers.generate_uuid()
     record_count = 10
 
-    Logger.info("Starting System Test")
-    Logger.info("Dataset Id: #{uuid}")
+    Logger.info("Starting System Test with Dataset Id: #{uuid}")
 
     organization = Helpers.generate_organization(uuid)
     organization_id = Helpers.upload_organization(organization, @default_andi_url)
@@ -30,8 +29,9 @@ defmodule ScosSystemTest do
     Logger.info("Organization: #{inspect(organization)}")
 
     dataset = Helpers.generate_dataset(uuid, organization_id, record_count, @default_tdg_url)
-    Helpers.upload_dataset(dataset, @default_andi_url)
     Logger.info("Dataset: #{inspect(dataset)}")
+    result = Helpers.upload_dataset(dataset, @default_andi_url)
+    Logger.info("Result of dataset creation: #{inspect(result)}")
 
     wait_for_data_to_appear_in_discovery(uuid, record_count)
   end
@@ -68,7 +68,7 @@ defmodule ScosSystemTest do
         body |> Jason.decode!() |> Map.get("data")
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
-        Logger.error("Discovery API not found")
+        Logger.error("Discovery API responded with NOT FOUND (404)")
         []
 
       {:error, %HTTPoison.Error{reason: reason}} ->
