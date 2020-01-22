@@ -30,7 +30,6 @@ defmodule ScosSystemTest.Helpers do
     }
   ]
 
-
   def generate_uuid() do
     UUID.uuid1()
     |> String.replace("-", "_")
