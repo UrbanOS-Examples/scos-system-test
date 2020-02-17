@@ -65,6 +65,7 @@ defmodule ScosSystemTest do
     end
   end
 
+  ## Held in stasis until the EOF work is done
   # defp wait_for_data_to_appear_in_discovery(uuid, count) do
   #   Patiently.wait_for!(
   #     discovery_query(uuid, count),
