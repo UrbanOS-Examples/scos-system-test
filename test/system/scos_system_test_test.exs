@@ -15,7 +15,7 @@ defmodule ScosSystemTest do
     uuid = Helpers.generate_uuid()
 
     on_exit(fn ->
-      Helpers.delete_dataset(uuid, @default_andi_url) |> IO.inspect(label: "scos_system_test_test.exs:18")
+      Helpers.delete_dataset(uuid, @default_andi_url)
     end)
 
     [uuid: uuid]
@@ -35,10 +35,10 @@ defmodule ScosSystemTest do
     dataset = Helpers.generate_dataset(uuid, organization_id, record_count, @default_tdg_url)
     Logger.info("Dataset: #{inspect(dataset)}")
     %{body: body} = Helpers.upload_dataset(dataset, @default_andi_url)
-    %{"technical" => %{"systemName" => systemName}} = Jason.decode!(body)
+    %{"technical" => %{"systemName" => system_name}} = Jason.decode!(body)
     Logger.info("Result of dataset creation: #{inspect(body)}")
 
-    wait_for_data_to_appear_in_presto(systemName, record_count)
+    wait_for_data_to_appear_in_presto(system_name, record_count)
   end
 
   defp wait_for_data_to_appear_in_presto(system_name, count) do
