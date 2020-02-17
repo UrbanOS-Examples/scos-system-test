@@ -90,4 +90,14 @@ defmodule ScosSystemTest.Helpers do
       [{"content-type", "application/json"}]
     )
   end
+
+  def execute(statement) do
+    try do
+      Application.get_env(:prestige, :session_opts)
+      |> Prestige.new_session()
+      |> Prestige.execute(statement)
+    rescue
+      e -> e
+    end
+  end
 end
