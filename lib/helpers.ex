@@ -90,4 +90,22 @@ defmodule ScosSystemTest.Helpers do
       [{"content-type", "application/json"}]
     )
   end
+
+  def delete_dataset(id, andi_url) do
+    HTTPoison.post!(
+      "#{andi_url}/api/v1/dataset/delete",
+      %{id: id} |> Jason.encode!(),
+      [{"content-type", "application/json"}]
+    )
+  end
+
+  def execute(statement) do
+    try do
+      Application.get_env(:prestige, :session_opts)
+      |> Prestige.new_session()
+      |> Prestige.execute(statement)
+    rescue
+      e -> e
+    end
+  end
 end

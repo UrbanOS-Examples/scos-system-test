@@ -32,7 +32,7 @@ defmodule ScosSystemTest.MixProject do
       {:configparser_ex, "~> 4.0"},
       {:smart_city, "~> 3.0"},
       {:smart_city_test, "~> 0.9"},
-      {:prestige, "~> 0.3.1"},
+      {:prestige, "~> 1.0"},
       {:placebo, "~> 1.2", only: [:dev, :test]}
     ]
   end

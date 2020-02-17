@@ -5,13 +5,11 @@ config :scos_system_test,
   default_andi_url: "https://andi.staging.internal.smartcolumbusos.com",
   default_tdg_url: "http://data-generator.testing"
 
-config :prestige,
-  base_url: "https://presto.staging.internal.smartcolumbusos.com",
-  headers: [
-    catalog: "hive",
-    schema: "default",
-    user: "scos-system-test"
-  ]
+config :prestige, :session_opts,
+  url: "https://presto.staging.internal.smartcolumbusos.com",
+  catalog: "hive",
+  schema: "default",
+  user: "scos-system-test"
 
 config :logger,
   level: :info,

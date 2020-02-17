@@ -92,8 +92,7 @@ defmodule ScosSystemTest.Performance do
 
   def select_stats(datasets) do
     "SELECT * FROM operational_stats WHERE dataset_id IN (#{datasets_string(datasets)}) AND app='SmartCityOS' ORDER BY timestamp DESC"
-    |> Prestige.execute(rows_as_maps: true)
-    |> Prestige.prefetch()
+    |> Helpers.execute()
   end
 
   defp clean_and_aggregate_group(datasets) do
@@ -107,8 +106,7 @@ defmodule ScosSystemTest.Performance do
 
   defp select_count_for_dataset(dataset) do
     "SELECT COUNT(*) FROM #{String.downcase(dataset.system_name)}"
-    |> Prestige.execute()
-    |> Prestige.prefetch()
+    |> Helpers.execute()
     |> List.flatten()
     |> List.first()
     |> log_count(dataset)

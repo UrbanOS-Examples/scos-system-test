@@ -22,7 +22,7 @@ defmodule ScosSystemTest.PerformanceTest do
   end
 
   test "fetch_counts adds the inserted count to each dataset", %{datasets: datasets} do
-    allow Prestige.execute(any()), seq: [[[100]], [[10_000]]], meck_options: [:passthrough]
+    allow Prestige.execute(any(), any()), seq: [[[100]], [[10_000]]], meck_options: [:passthrough]
 
     result = Performance.fetch_counts(datasets)
 
