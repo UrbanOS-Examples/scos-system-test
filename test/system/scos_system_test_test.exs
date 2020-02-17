@@ -12,12 +12,16 @@ defmodule ScosSystemTest do
 
   setup do
     File.rm(@temp_file_path)
+    uuid = Helpers.generate_uuid()
 
-    :ok
+    on_exit(fn ->
+      Helpers.delete_dataset(uuid, @default_andi_url) |> IO.inspect(label: "scos_system_test_test.exs:18")
+    end)
+
+    [uuid: uuid]
   end
 
-  test "adds an organization and creates a dataset for it" do
-    uuid = Helpers.generate_uuid()
+  test "adds an organization and creates a dataset for it", %{uuid: uuid} do
     record_count = 10
 
     Logger.info("Starting System Test with Dataset Id: #{uuid}")
