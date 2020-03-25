@@ -41,7 +41,7 @@ defmodule ScosSystemTest do
       Helpers.generate_dataset(uuid, organization, record_count, @default_tdg_url)
       |> create_dataset()
 
-    wait_for_data_to_appear_in_presto(dataset.technical.systemName, record_count)
+    wait_for_data_to_appear_in_presto(dataset.technical.systemName, record_count, true)
   end
 
   test "creates a streaming dataset and sees data in the stream", %{
@@ -62,11 +62,12 @@ defmodule ScosSystemTest do
     StreamClient.join_topic(pid, stream_topic)
 
     wait_for_data_to_appear_in_the_stream(stream_topic, record_count)
+    wait_for_data_to_appear_in_presto(streaming_dataset.technical.systemName, record_count, false)
   end
 
-  defp wait_for_data_to_appear_in_presto(system_name, count) do
+  defp wait_for_data_to_appear_in_presto(system_name, count, require_precise_record_count) do
     Patiently.wait_for!(
-      presto_query(system_name, count),
+      presto_query(system_name, count, require_precise_record_count),
       dwell: 6_000,
       max_tries: 50
     )
@@ -100,15 +101,21 @@ defmodule ScosSystemTest do
     end
   end
 
-  defp presto_query(system_name, message_count) do
+  defp presto_query(system_name, message_count, require_precise_record_count) do
     fn ->
       try do
         {:ok, %{rows: [[count]]}} =
           "select count(1) from #{system_name}__json"
           |> Helpers.execute()
 
-        assert count == message_count
-        Logger.info("Expected number of records found in Presto")
+        if require_precise_record_count do
+          assert count == message_count
+          Logger.info("Expected number of records found in Presto")
+        else
+          assert count >= message_count
+          Logger.info("At least the number of records required were found in Presto")
+        end
+
         true
       rescue
         error ->
