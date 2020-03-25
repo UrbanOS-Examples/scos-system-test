@@ -52,33 +52,41 @@ defmodule ScosSystemTest.Helpers do
     )
     |> Map.get(:body)
     |> Jason.decode!()
-    |> Map.get("id")
   end
 
-  def generate_dataset(uuid, organization_id, record_count, tdg_url) do
+  def generate_dataset(
+        uuid,
+        %{"id" => organization_id, "orgName" => organization_name},
+        record_count,
+        tdg_url,
+        technical_overrides \\ %{}
+      ) do
     format = Faker.Util.pick(["csv", "json"])
 
     %{
       id: uuid,
-      technical: %{
-        systemName: "scos_test__" <> uuid,
-        orgId: organization_id,
-        partitioner: %{
-          type: "Hash",
-          query: ""
-        },
-        cadence: "once",
-        sourceType: "ingest",
-        sourceUrl: "#{tdg_url}/api/generate",
-        sourceQueryParams: %{
-          "format" => format,
-          "schema" => Jason.encode!(@sample_schema),
-          "count" => to_string(record_count)
-        },
-        sourceFormat: format,
-        schema: @sample_schema,
-        private: false
-      }
+      technical:
+        %{
+          systemName: "scos_test__" <> uuid,
+          orgId: organization_id,
+          orgName: organization_name,
+          partitioner: %{
+            type: "Hash",
+            query: ""
+          },
+          cadence: "once",
+          sourceType: "ingest",
+          sourceUrl: "#{tdg_url}/api/generate",
+          sourceQueryParams: %{
+            "format" => format,
+            "schema" => Jason.encode!(@sample_schema),
+            "count" => to_string(record_count)
+          },
+          sourceFormat: format,
+          schema: @sample_schema,
+          private: false
+        }
+        |> Map.merge(technical_overrides)
     }
     |> TDG.create_dataset()
   end
@@ -89,6 +97,7 @@ defmodule ScosSystemTest.Helpers do
       dataset |> Jason.encode!(),
       [{"content-type", "application/json"}]
     )
+    |> Map.get(:body)
   end
 
   def delete_dataset(id, andi_url) do

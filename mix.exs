@@ -21,6 +21,9 @@ defmodule ScosSystemTest.MixProject do
   defp deps do
     [
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:phoenix_gen_socket_client, "~> 2.1.1"},
+      {:websocket_client, "~> 1.2"},
+      {:poison, "~> 2.0"},
       {:httpoison, "~> 1.5"},
       {:patiently, "~> 0.2"},
       {:jason, "~> 1.1"},
