@@ -8,10 +8,10 @@ defmodule ScosSystemTest.StreamClient do
 
   def start_link(url) do
     GenSocketClient.start_link(
-          __MODULE__,
-          Phoenix.Channels.GenSocketClient.Transport.WebSocketClient,
-          url
-        )
+      __MODULE__,
+      Phoenix.Channels.GenSocketClient.Transport.WebSocketClient,
+      url
+    )
   end
 
   def init(url) do
@@ -28,7 +28,7 @@ defmodule ScosSystemTest.StreamClient do
   end
 
   def handle_disconnected(reason, state) do
-    Logger.error("disconnected: #{inspect reason}")
+    Logger.error("disconnected: #{inspect(reason)}")
     Process.send_after(self(), :connect, :timer.seconds(@rejoin_interval_seconds))
     {:ok, state}
   end
@@ -40,25 +40,30 @@ defmodule ScosSystemTest.StreamClient do
   end
 
   def handle_join_error(topic, payload, _transport, state) do
-    Logger.warn("join error on the topic #{topic}: #{inspect payload}\nRetrying in #{@rejoin_interval_seconds} seconds")
+    Logger.warn(
+      "join error on the topic #{topic}: #{inspect(payload)}\nRetrying in #{
+        @rejoin_interval_seconds
+      } seconds"
+    )
+
     Process.send_after(self(), {:join, topic}, :timer.seconds(@rejoin_interval_seconds))
     {:ok, state}
   end
 
   def handle_channel_closed(topic, payload, _transport, state) do
-    Logger.error("disconnected from the topic #{topic}: #{inspect payload}")
+    Logger.error("disconnected from the topic #{topic}: #{inspect(payload)}")
     Process.send_after(self(), {:join, topic}, :timer.seconds(@rejoin_interval_seconds))
     {:ok, state}
   end
 
   def handle_message(topic, event, payload, _transport, state) do
-    Logger.debug("message on topic #{topic}: #{event} #{inspect payload}")
+    Logger.debug("message on topic #{topic}: #{event} #{inspect(payload)}")
     :ets.insert(String.to_existing_atom(topic), {NaiveDateTime.utc_now(), payload})
     {:ok, state}
   end
 
   def handle_reply(topic, _ref, payload, _transport, state) do
-    Logger.debug("reply on topic #{topic}: #{inspect payload}")
+    Logger.debug("reply on topic #{topic}: #{inspect(payload)}")
     {:ok, state}
   end
 
@@ -66,14 +71,16 @@ defmodule ScosSystemTest.StreamClient do
     Logger.info("connecting")
     {:connect, state}
   end
+
   def handle_info({:join, topic}, transport, state) do
     Logger.info("joining the topic #{topic}")
     GenSocketClient.join(transport, topic)
 
     {:ok, state}
   end
+
   def handle_info(message, _transport, state) do
-    Logger.warn("Unhandled message #{inspect message}")
+    Logger.warn("Unhandled message #{inspect(message)}")
     {:ok, state}
   end
 end

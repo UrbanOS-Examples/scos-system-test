@@ -37,7 +37,9 @@ defmodule ScosSystemTest do
   } do
     record_count = 10
 
-    dataset = Helpers.generate_dataset(uuid, organization, record_count, @default_tdg_url) |> create_dataset()
+    dataset =
+      Helpers.generate_dataset(uuid, organization, record_count, @default_tdg_url)
+      |> create_dataset()
 
     wait_for_data_to_appear_in_presto(dataset.technical.systemName, record_count)
   end
@@ -121,7 +123,12 @@ defmodule ScosSystemTest do
 
     with dataset_map <- Helpers.upload_dataset(proposed_dataset, @default_andi_url),
          {:ok, dataset} <- SmartCity.Dataset.new(dataset_map) do
-      Logger.info("Created dataset #{dataset.business.dataTitle} with system name: #{dataset.technical.systemName}")
+      Logger.info(
+        "Created dataset #{dataset.business.dataTitle} with system name: #{
+          dataset.technical.systemName
+        }"
+      )
+
       dataset
     else
       {:error, error} -> raise error
