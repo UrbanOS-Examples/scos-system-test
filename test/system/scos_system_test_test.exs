@@ -52,7 +52,7 @@ defmodule ScosSystemTest do
 
     streaming_dataset =
       Helpers.generate_dataset(uuid, organization, record_count, @default_tdg_url, %{
-        cadence: "*/2 * * * * *",
+        cadence: "*/15 * * * * *",
         sourceType: "stream"
       })
       |> create_dataset()
