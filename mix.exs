@@ -34,7 +34,7 @@ defmodule ScosSystemTest.MixProject do
       {:sweet_xml, "~> 0.6"},
       {:configparser_ex, "~> 4.0"},
       {:smart_city, "~> 3.0"},
-      {:smart_city_test, "~> 0.9"},
+      {:smart_city_test, "~> 0.10"},
       {:prestige, "~> 1.0"},
       {:placebo, "~> 1.2", only: [:dev, :test]}
     ]
