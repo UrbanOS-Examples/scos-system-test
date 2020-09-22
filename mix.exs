@@ -30,12 +30,13 @@ defmodule ScosSystemTest.MixProject do
       {:elixir_uuid, "~> 1.2"},
       {:csv, "~> 2.3"},
       {:faker, "~> 0.12"},
-      {:hackney, "~> 1.15"},
+      {:hackney, "~> 1.16"},
       {:sweet_xml, "~> 0.6"},
       {:configparser_ex, "~> 4.0"},
       {:smart_city, "~> 3.0"},
       {:smart_city_test, "~> 0.10"},
       {:prestige, "~> 1.0"},
+      {:websockex, "~> 0.4.0"},
       {:placebo, "~> 1.2", only: [:dev, :test]}
     ]
   end
