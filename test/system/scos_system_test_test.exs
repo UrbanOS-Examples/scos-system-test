@@ -58,7 +58,7 @@ defmodule ScosSystemTest do
       |> create_dataset()
 
     stream_topic = "streaming:#{streaming_dataset.technical.systemName}"
-    {:ok, pid} = SocketClient.start_link(@discovery_streams_url, %{topic: stream_topic})
+    SocketClient.start_link(@discovery_streams_url, %{topic: stream_topic})
 
     wait_for_data_to_appear_in_the_stream(stream_topic, record_count)
     wait_for_data_to_appear_in_presto(streaming_dataset.technical.systemName, record_count, false)
