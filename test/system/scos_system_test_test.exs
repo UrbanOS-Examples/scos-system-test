@@ -2,7 +2,7 @@ defmodule ScosSystemTest do
   use ExUnit.Case
   @moduletag timeout: 1_200_000
   alias ScosSystemTest.Helpers
-  alias ScosSystemTest.StreamClient
+  alias ScosSystemTest.SocketClient
 
   require Logger
 
@@ -58,8 +58,7 @@ defmodule ScosSystemTest do
       |> create_dataset()
 
     stream_topic = "streaming:#{streaming_dataset.technical.systemName}"
-    {:ok, pid} = StreamClient.start_link(@discovery_streams_url)
-    StreamClient.join_topic(pid, stream_topic)
+    SocketClient.start_link(@discovery_streams_url, %{topic: stream_topic})
 
     wait_for_data_to_appear_in_the_stream(stream_topic, record_count)
     wait_for_data_to_appear_in_presto(streaming_dataset.technical.systemName, record_count, false)
@@ -85,8 +84,8 @@ defmodule ScosSystemTest do
     fn ->
       try do
         message_count =
-          :ets.tab2list(String.to_existing_atom(stream_topic))
-          |> Enum.map(fn {_, message} -> message end)
+          ScosSystemTest.SocketClient.get_messages(stream_topic)
+          |> Enum.map(fn {_, message} -> Jason.decode!(message) end)
           |> Enum.filter(fn message -> Map.has_key?(message, "quantity") end)
           |> Enum.count()
 
