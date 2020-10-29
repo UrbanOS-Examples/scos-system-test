@@ -20,7 +20,7 @@ defmodule ScosSystemTest.MixProject do
 
   defp deps do
     [
-      {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.1.5", only: [:dev, :test], runtime: false},
       {:brod, "~> 3.14.0"},
       {:phoenix_gen_socket_client, "~> 2.1.1"},
       {:websocket_client, "~> 1.2"},
