@@ -76,12 +76,25 @@ defmodule ScosSystemTest.Helpers do
           },
           cadence: "once",
           sourceType: "ingest",
-          sourceUrl: "#{tdg_url}/api/generate",
-          sourceQueryParams: %{
-            "format" => format,
-            "schema" => Jason.encode!(@sample_schema),
-            "count" => to_string(record_count)
-          },
+          extractSteps: [
+            %{
+              type: "http",
+              assigns: %{},
+              context: %{
+                url: "#{tdg_url}/api/generate",
+                action: "GET",
+                queryParams: %{
+                  "format" => format,
+                  "schema" => Jason.encode!(@sample_schema),
+                  "count" => to_string(record_count)
+                },
+                headers: %{},
+                protocol: nil,
+                body: %{}
+              }
+            }
+          ],
+          sourceUrl: "http://example.com",
           sourceFormat: format,
           schema: @sample_schema,
           private: false
