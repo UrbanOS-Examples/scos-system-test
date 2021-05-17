@@ -7,34 +7,35 @@ defmodule ScosSystemTest do
   require Logger
 
   @temp_file_path "./tmp_file"
-  # @discovery_url Application.get_env(:scos_system_test, :discovery_url)
   @discovery_streams_url Application.get_env(:scos_system_test, :discovery_streams_url)
   @default_andi_url Application.get_env(:scos_system_test, :default_andi_url)
   @default_tdg_url Application.get_env(:scos_system_test, :default_tdg_url)
 
   setup do
     File.rm(@temp_file_path)
-    uuid = Helpers.generate_uuid()
-
-    Logger.info("Starting System Test with Dataset Id: #{uuid}")
+    ingest_uuid = Helpers.generate_uuid()
+    streaming_uuid = Helpers.generate_uuid()
 
     on_exit(fn ->
-      Helpers.delete_dataset(uuid, @default_andi_url)
+      Helpers.delete_dataset(ingest_uuid, @default_andi_url)
+      Helpers.delete_dataset(streaming_uuid, @default_andi_url)
     end)
 
     organization =
-      Helpers.generate_organization(uuid)
+      Helpers.generate_uuid()
+      |> Helpers.generate_organization()
       |> Helpers.upload_organization(@default_andi_url)
 
     Logger.info("Organization: #{inspect(organization)}")
 
-    [uuid: uuid, organization: organization]
+    [ingest_uuid: ingest_uuid, streaming_uuid: streaming_uuid, organization: organization]
   end
 
   test "creates an ingest dataset", %{
-    uuid: uuid,
+    ingest_uuid: uuid,
     organization: organization
   } do
+    Logger.info("Starting Ingest System Test with Dataset Id: #{uuid}")
     record_count = 10
 
     dataset =
@@ -45,9 +46,10 @@ defmodule ScosSystemTest do
   end
 
   test "creates a streaming dataset and sees data in the stream", %{
-    uuid: uuid,
+    streaming_uuid: uuid,
     organization: organization
   } do
+    Logger.info("Starting Streaming System Test with Dataset Id: #{uuid}")
     record_count = 2
 
     streaming_dataset =
@@ -140,49 +142,4 @@ defmodule ScosSystemTest do
       {:error, error} -> raise error
     end
   end
-
-  ## Held in stasis until the EOF work is done
-  # defp wait_for_data_to_appear_in_discovery(uuid, count) do
-  #   Patiently.wait_for!(
-  #     discovery_query(uuid, count),
-  #     dwell: 6_000,
-  #     max_tries: 50
-  #   )
-  # end
-
-  # defp discovery_query(uuid, message_count) do
-  #   fn ->
-  #     url = "#{@discovery_url}/api/v1/dataset/#{uuid}/preview"
-
-  #     actual = url |> HTTPoison.get() |> handle_response()
-
-  #     Logger.info("Waiting for #{message_count} messages, got #{length(actual)}")
-  #     Logger.info("Messages: #{inspect(actual)}")
-
-  #     try do
-  #       assert length(actual) == message_count
-  #       true
-  #     rescue
-  #       _ -> false
-  #     end
-  #   end
-  # end
-
-  # defp handle_response(response) do
-  #   case response do
-  #     {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-  #       body |> Jason.decode!() |> Map.get("data")
-
-  #     {:ok, %HTTPoison.Response{status_code: status_code}} ->
-  #       Logger.error("Unexpected status code from Discovery API: #{status_code}")
-  #       []
-
-  #     {:error, %HTTPoison.Error{reason: reason}} ->
-  #       Logger.error("Error calling Discovery API: #{reason}")
-  #       []
-
-  #     result ->
-  #       Logger.error("Unexpected result from Discovery API: #{result}")
-  #   end
-  # end
 end
