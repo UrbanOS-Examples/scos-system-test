@@ -112,6 +112,7 @@ defmodule ScosSystemTest.Helpers do
 
   def delete_dataset(id, andi_url) do
     Logger.info("Cleaning up dataset: #{id}")
+
     HTTPoison.post!(
       "#{andi_url}/api/v1/dataset/delete",
       %{id: id} |> Jason.encode!(),
