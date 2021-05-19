@@ -6,6 +6,8 @@ defmodule ScosSystemTest.Helpers do
   """
   alias SmartCity.TestDataGenerator, as: TDG
 
+  require Logger
+
   @sample_schema [
     %{
       name: "name",
@@ -67,13 +69,8 @@ defmodule ScosSystemTest.Helpers do
       id: uuid,
       technical:
         %{
-          systemName: "scos_test__" <> uuid,
           orgId: organization_id,
           orgName: organization_name,
-          partitioner: %{
-            type: "Hash",
-            query: ""
-          },
           cadence: "once",
           sourceType: "ingest",
           extractSteps: [
@@ -114,6 +111,8 @@ defmodule ScosSystemTest.Helpers do
   end
 
   def delete_dataset(id, andi_url) do
+    Logger.info("Cleaning up dataset: #{id}")
+
     HTTPoison.post!(
       "#{andi_url}/api/v1/dataset/delete",
       %{id: id} |> Jason.encode!(),

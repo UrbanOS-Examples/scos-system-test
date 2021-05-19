@@ -42,7 +42,7 @@ defmodule ScosSystemTest.SocketClient do
       %{"status" => "error", "response" => %{"reason" => reason}} ->
         delay = attempts * @backoff
 
-        Logger.warn(
+        Logger.info(
           "Failed to connect to topic #{topic} due to '#{reason}', retrying after #{delay}ms"
         )
 
@@ -51,6 +51,7 @@ defmodule ScosSystemTest.SocketClient do
 
       %{"status" => "ok"} ->
         Logger.debug("Status message ignored")
+        Logger.info("Connected to #{topic}")
         {:ok, state}
 
       payload ->
