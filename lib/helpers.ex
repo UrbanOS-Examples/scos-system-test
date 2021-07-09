@@ -58,7 +58,7 @@ defmodule ScosSystemTest.Helpers do
 
   def generate_dataset(
         uuid,
-        %{"id" => organization_id, "orgName" => organization_name},
+        %{"id" => organization_id},
         record_count,
         tdg_url,
         technical_overrides \\ %{}
@@ -69,8 +69,7 @@ defmodule ScosSystemTest.Helpers do
       id: uuid,
       technical:
         %{
-          orgId: organization_id,
-          orgName: organization_name,
+          organization_id: organization_id,
           cadence: "once",
           sourceType: "ingest",
           extractSteps: [

@@ -45,7 +45,8 @@ defmodule ScosSystemTest.Performance do
     dataset = Helpers.generate_dataset(uuid, organization_id, record_count, tdg_url)
     Helpers.upload_dataset(dataset, andi_url)
 
-    %{technical: %{orgName: org_name, dataName: data_name}} = dataset
+    %{technical: %{dataName: data_name}} = dataset
+    org_name = organization.orgName
 
     %{id: uuid, system_name: "#{org_name}__#{data_name}", record_count: record_count}
   end
