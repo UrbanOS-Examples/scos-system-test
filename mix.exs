@@ -4,7 +4,7 @@ defmodule ScosSystemTest.MixProject do
   def project do
     [
       app: :scos_system_test,
-      version: "0.1.1",
+      version: "1.0.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -34,8 +34,8 @@ defmodule ScosSystemTest.MixProject do
       {:hackney, "~> 1.16"},
       {:sweet_xml, "~> 0.6"},
       {:configparser_ex, "~> 4.0"},
-      {:smart_city, "~> 3.0"},
-      {:smart_city_test, "~> 0.10"},
+      {:smart_city, "~> 4.0"},
+      {:smart_city_test, "~> 1.0"},
       {:prestige, "~> 1.0"},
       {:websockex, "~> 0.4.0"},
       {:placebo, "~> 1.2", only: [:dev, :test]}
